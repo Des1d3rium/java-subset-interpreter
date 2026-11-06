@@ -1,0 +1,6 @@
+# Generated Racket compilation output
+compiled/
+**/compiled/
+
+# macOS metadata
+.DS_Store
