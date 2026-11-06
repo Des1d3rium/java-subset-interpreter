@@ -1,0 +1,110 @@
+{
+  "source_commit": "5faf61446c7fe3203e0c89a653739eb7ce9ff76f",
+  "racket": "Welcome to Racket v9.3 [cs].",
+  "results": [
+    {
+      "name": "original lexical scope example",
+      "expected": 115,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "130",
+      "stderr": ""
+    },
+    {
+      "name": "block shadowing",
+      "expected": 1,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "1",
+      "stderr": ""
+    },
+    {
+      "name": "lexical rather than caller scope",
+      "expected": 10,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "20",
+      "stderr": ""
+    },
+    {
+      "name": "escaping closure",
+      "expected": 12,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "error: undefined variable add",
+      "stderr": ""
+    },
+    {
+      "name": "multiple function arguments",
+      "expected": 11,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "11",
+      "stderr": ""
+    },
+    {
+      "name": "factorial recursion",
+      "expected": 720,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "720",
+      "stderr": ""
+    },
+    {
+      "name": "global mutation in expression call",
+      "expected": 5,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "2",
+      "stderr": ""
+    },
+    {
+      "name": "expression call exception reaches caller catch",
+      "expected": 10,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "Uncaught exception thrown",
+      "stderr": ""
+    },
+    {
+      "name": "return executes finally with current state",
+      "expected": 45,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "40",
+      "stderr": ""
+    },
+    {
+      "name": "catch return executes finally",
+      "expected": 10,
+      "expected_error": null,
+      "exit_code": 0,
+      "stdout": "3",
+      "stderr": ""
+    },
+    {
+      "name": "no whitespace before unary minus",
+      "expected": 3,
+      "expected_error": null,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "parser: Missing semicolon\n  context...:\n   /private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/functionParser.rkt:132:2: compound-statement-parse\n   /private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/functionParser.rkt:62:2: function-parse\n   /private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/functionParser.rkt:33:2: program-parse\n   /private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/functionParser.rkt:23:2: parser\n   /private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/interpreter.rkt:21:2: interpret\n   body of \"/private/var/folders/0d/qwd5vmv901z_d49jbtsr6lxr0000gn/T/tmpaq676h2x/interpreter.rkt\""
+    },
+    {
+      "name": "uninitialized variable",
+      "expected": null,
+      "expected_error": "uninitialized variable",
+      "exit_code": 0,
+      "stdout": "'novalue",
+      "stderr": ""
+    },
+    {
+      "name": "too many arguments",
+      "expected": null,
+      "expected_error": "arity mismatch",
+      "exit_code": 0,
+      "stdout": "1",
+      "stderr": ""
+    }
+  ]
+}

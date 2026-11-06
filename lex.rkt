@@ -65,6 +65,10 @@
 
 (define start-lex
   (lambda (filename)
+     (set! last-symbol-saved #f)
+     (set! saved-symbol #f)
+     (set! saved-last-char #f)
+     (set! last-read-char #f)
      (set! file-port (open-input-file filename))))
 
 ; close the input file
@@ -148,6 +152,7 @@
     (let ((nextchar (readchar file-port)))
       (cond ((eof-object? nextchar) (return-eof-lex))
             ((char-whitespace? nextchar) (lex))
+            ((char=? nextchar #\/) (slash-lex))
             ((char-alphabetic? nextchar) (return-id-lex (string->symbol (id-lex file-port (make-string 1 nextchar)))))
             ((char-numeric? nextchar) (return-num-lex (num-lex file-port (addtointeger 0 nextchar))))
             ((memq nextchar reserved-operator-list) (return-symbol-lex (string->symbol (symbol-lex file-port (make-string 1 nextchar)))))
@@ -164,7 +169,7 @@
 (define id-lex
    (lambda (fport idstring)
       (let ((nextchar (readchar fport)))
-        (if (or (char-alphabetic? nextchar) (char-numeric? nextchar) (char=? #\_ nextchar))
+        (if (and (char? nextchar) (or (char-alphabetic? nextchar) (char-numeric? nextchar) (char=? #\_ nextchar)))
             (id-lex fport (string-append idstring (make-string 1 nextchar)))
             (begin (unreadchar nextchar fport)
                    idstring)))))
@@ -176,7 +181,7 @@
 (define num-lex
   (lambda (fport value)
     (let ((nextchar (readchar fport)))
-      (if (char-numeric? nextchar)
+      (if (and (char? nextchar) (char-numeric? nextchar))
          (num-lex fport (addtointeger value nextchar))
          (begin (unreadchar nextchar fport)
                 value)))))
@@ -184,7 +189,26 @@
 (define symbol-lex
   (lambda (fport idstring)
     (let ((nextchar (readchar fport)))
-      (if (memq nextchar reserved-operator-list)
-         (symbol-lex fport (string-append idstring (make-string 1 nextchar)))
+      (if (and (char? nextchar)
+               (member (string-append idstring (string nextchar)) '("==" "!=" "<=" ">=" "&&" "||")))
+         (string-append idstring (string nextchar))
          (begin (unreadchar nextchar fport)
                 idstring)))))
+
+(define (slash-lex)
+  (define next (readchar file-port))
+  (cond
+    [(eqv? next #\/)
+     (let loop ()
+       (define ch (readchar file-port))
+       (unless (or (eof-object? ch) (eqv? ch #\newline)) (loop)))
+     (lex)]
+    [(eqv? next #\*)
+     (let loop ([star? #f])
+       (define ch (readchar file-port))
+       (when (eof-object? ch) (error 'lexer "Unterminated block comment"))
+       (unless (and star? (eqv? ch #\/)) (loop (eqv? ch #\*))))
+     (lex)]
+    [else
+     (unreadchar next file-port)
+     (return-symbol-lex '/)]))

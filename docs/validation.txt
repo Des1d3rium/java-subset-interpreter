@@ -1,0 +1,29 @@
+Local validation: Darwin arm64
+
+$ racket --version
+Welcome to Racket v9.3 [cs].
+
+exit status: 0
+
+$ raco test tests
+raco test: (submod (file "tests/cli-test.rkt") test)
+raco test: (submod (file "tests/interpreter-test.rkt") test)
+106 tests passed
+
+exit status: 0
+
+$ racket interpreter.rkt examples/lexical-scope.java
+115
+
+exit status: 0
+
+$ racket interpreter.rkt examples/closure-counter.java
+121
+
+exit status: 0
+
+$ racket interpreter.rkt examples/finally.java
+45
+
+exit status: 0
+

@@ -21,10 +21,10 @@
 
 (define parser
   (lambda (filename)
-    (begin (start-lex filename)
-           (let ((parse-tree (program-parse)))
-             (end-lex)
-             parse-tree))))
+    (dynamic-wind
+      (lambda () (start-lex filename))
+      program-parse
+      end-lex)))
 
 ;===============================================
 ; The recursive descent parser
@@ -130,12 +130,13 @@
 
 (define compound-statement-parse
   (lambda ()
-    (if (eq? (car (get-next-symbol)) 'RIGHTBRACE)
-        '()
-        (begin
-          (unget-next-symbol)
-          (let ((s (statement-parse)))
-            (cons s (compound-statement-parse)))))))
+    (case (car (get-next-symbol))
+      [(RIGHTBRACE) '()]
+      [(EOF) (error 'parser "Missing closing brace")]
+      [else
+       (unget-next-symbol)
+       (let ((s (statement-parse)))
+         (cons s (compound-statement-parse)))])))
 
 ; parse a return statement: return followed by a value.
 

@@ -1,0 +1,590 @@
+[
+  {
+    "name": "operator precedence",
+    "category": "expressions",
+    "source": "function main(){return 7+3*4-8/2;}",
+    "expected": 15
+  },
+  {
+    "name": "parentheses",
+    "category": "expressions",
+    "source": "function main(){return (2+3)*4;}",
+    "expected": 20
+  },
+  {
+    "name": "left associative subtraction",
+    "category": "expressions",
+    "source": "function main(){return 20-5-3;}",
+    "expected": 12
+  },
+  {
+    "name": "negative integer division",
+    "category": "expressions",
+    "source": "function main(){return -7/3;}",
+    "expected": -2
+  },
+  {
+    "name": "negative remainder",
+    "category": "expressions",
+    "source": "function main(){return -7%3;}",
+    "expected": -1
+  },
+  {
+    "name": "unary operators",
+    "category": "expressions",
+    "source": "function main(){return -(-8)+2;}",
+    "expected": 10
+  },
+  {
+    "name": "assignment expressions",
+    "category": "expressions",
+    "source": "function main(){var x=0;var y=0;return (x=y=4)+x+y;}",
+    "expected": 12
+  },
+  {
+    "name": "Boolean precedence",
+    "category": "booleans",
+    "source": "function main(){return true||false&&false;}",
+    "expected": "true"
+  },
+  {
+    "name": "Boolean negation and equality",
+    "category": "booleans",
+    "source": "function main(){return !false&&true==true&&false!=true;}",
+    "expected": "true"
+  },
+  {
+    "name": "comparison operators",
+    "category": "booleans",
+    "source": "function main(){return 1<2&&2<=2&&3>2&&3>=3&&2!=3;}",
+    "expected": "true"
+  },
+  {
+    "name": "false variable condition",
+    "category": "booleans",
+    "source": "function main(){var flag=false;if(flag)return 1;else return 2;}",
+    "expected": 2
+  },
+  {
+    "name": "and short circuit",
+    "category": "booleans",
+    "source": "function main(){return false&&(1/0==0);}",
+    "expected": "false"
+  },
+  {
+    "name": "or short circuit",
+    "category": "booleans",
+    "source": "function main(){return true||(missing==0);}",
+    "expected": "true"
+  },
+  {
+    "name": "block shadowing",
+    "category": "scope",
+    "source": "function main(){var x=1;{var x=2;x=3;}return x;}",
+    "expected": 1
+  },
+  {
+    "name": "outer block assignment",
+    "category": "scope",
+    "source": "function main(){var x=1;{x=9;}return x;}",
+    "expected": 9
+  },
+  {
+    "name": "lexical rather than caller scope",
+    "category": "scope",
+    "source": "var a=10;function f(){return a;}function main(){var a=20;return f();}",
+    "expected": 10
+  },
+  {
+    "name": "nested function observes captured binding",
+    "category": "scope",
+    "source": "function main(){var x=4;function f(){return x;}x=8;return f();}",
+    "expected": 8
+  },
+  {
+    "name": "escaping closure",
+    "category": "scope",
+    "source": "function make(x){function add(y){return x+y;}return add;}function main(){var f=make(7);return f(5);}",
+    "expected": 12
+  },
+  {
+    "name": "independent closure state",
+    "category": "scope",
+    "source": "function counter(){var x=0;function next(){x=x+1;return x;}return next;}function main(){var a=counter();var b=counter();return a()*100+a()*10+b();}",
+    "expected": 121
+  },
+  {
+    "name": "block local closure survives exit",
+    "category": "scope",
+    "source": "function main(){var f;{var x=6;function read(){return x;}f=read;}return f();}",
+    "expected": 6
+  },
+  {
+    "name": "multiple function arguments",
+    "category": "functions",
+    "source": "function add(a,b){return a+b;}function main(){return add(4,7);}",
+    "expected": 11
+  },
+  {
+    "name": "factorial recursion",
+    "category": "functions",
+    "source": "function fact(n){if(n==0)return 1;return n*fact(n-1);}function main(){return fact(6);}",
+    "expected": 720
+  },
+  {
+    "name": "mutual recursion",
+    "category": "functions",
+    "source": "function even(n){if(n==0)return true;return odd(n-1);}function odd(n){if(n==0)return false;return even(n-1);}function main(){return even(12);}",
+    "expected": "true"
+  },
+  {
+    "name": "nested recursive function",
+    "category": "functions",
+    "source": "function main(){var base=2;function power(n){if(n==0)return 1;return base*power(n-1);}return power(5);}",
+    "expected": 32
+  },
+  {
+    "name": "early return from block",
+    "category": "functions",
+    "source": "function f(){while(true){{return 7;}}return 0;}function main(){return f();}",
+    "expected": 7
+  },
+  {
+    "name": "statement call without return",
+    "category": "functions",
+    "source": "var x=0;function set(){x=8;}function main(){set();return x;}",
+    "expected": 8
+  },
+  {
+    "name": "global function used by initializer",
+    "category": "functions",
+    "source": "var x=f();function f(){return 4;}function main(){return x;}",
+    "expected": 4
+  },
+  {
+    "name": "parameter assignment is by value",
+    "category": "functions",
+    "source": "function set(x){x=9;return x;}function main(){var x=2;set(x);return x;}",
+    "expected": 2
+  },
+  {
+    "name": "function passed as value",
+    "category": "functions",
+    "source": "function add(x){return x+1;}function apply(f,x){return f(x);}function main(){return apply(add,8);}",
+    "expected": 9
+  },
+  {
+    "name": "global mutation in expression call",
+    "category": "state",
+    "source": "var x=0;function next(){x=x+1;return x;}function main(){return next()+next()+x;}",
+    "expected": 5
+  },
+  {
+    "name": "arguments evaluated left to right",
+    "category": "state",
+    "source": "var x=0;function next(){x=x+1;return x;}function pair(a,b){return 10*a+b;}function main(){return pair(next(),next());}",
+    "expected": 12
+  },
+  {
+    "name": "closure updates correct shadowed cell",
+    "category": "state",
+    "source": "var x=1;function bump(){x=x+1;return x;}function main(){var x=100;var y=bump();return x+y;}",
+    "expected": 102
+  },
+  {
+    "name": "short circuit skips mutation",
+    "category": "state",
+    "source": "var x=0;function bump(){x=x+1;return true;}function main(){var a=false&&bump();var b=true||bump();return x;}",
+    "expected": 0
+  },
+  {
+    "name": "ordinary while loop",
+    "category": "control",
+    "source": "function main(){var i=0;var sum=0;while(i<5){i=i+1;sum=sum+i;}return sum;}",
+    "expected": 15
+  },
+  {
+    "name": "continue unwinds block scope",
+    "category": "control",
+    "source": "function main(){var i=0;var sum=0;while(i<5){var local=i;i=i+1;if(i==3)continue;sum=sum+i;}return sum;}",
+    "expected": 12
+  },
+  {
+    "name": "break unwinds block scope",
+    "category": "control",
+    "source": "function main(){var x=4;while(true){var x=9;break;}return x;}",
+    "expected": 4
+  },
+  {
+    "name": "nested loops use nearest break",
+    "category": "control",
+    "source": "function main(){var i=0;var x=0;while(i<3){i=i+1;while(true){x=x+1;break;}}return x;}",
+    "expected": 3
+  },
+  {
+    "name": "throw and catch",
+    "category": "exceptions",
+    "source": "function main(){try{throw 7;}catch(e){return e+1;}return 0;}",
+    "expected": 8
+  },
+  {
+    "name": "normal finally",
+    "category": "exceptions",
+    "source": "function main(){var x=1;try{x=2;}finally{x=x+3;}return x;}",
+    "expected": 5
+  },
+  {
+    "name": "catch followed by finally",
+    "category": "exceptions",
+    "source": "function main(){var x=0;try{throw 4;}catch(e){x=e;}finally{x=x+2;}return x;}",
+    "expected": 6
+  },
+  {
+    "name": "expression call exception reaches caller catch",
+    "category": "exceptions",
+    "source": "function fail(){throw 7;}function main(){try{return 1+fail();}catch(e){return e+3;}}",
+    "expected": 10
+  },
+  {
+    "name": "argument exception reaches caller catch",
+    "category": "exceptions",
+    "source": "function fail(){throw 6;}function id(x){return x;}function main(){try{return id(fail());}catch(e){return e;}}",
+    "expected": 6
+  },
+  {
+    "name": "throw through function executes finally",
+    "category": "exceptions",
+    "source": "var x=0;function fail(){try{throw 5;}finally{x=3;}}function main(){try{fail();}catch(e){return x+e;}}",
+    "expected": 8
+  },
+  {
+    "name": "return executes finally with current state",
+    "category": "exceptions",
+    "source": "var g=0;function f(){var x=1;try{x=4;return x;}finally{g=x+1;}}function main(){var r=f();return r*10+g;}",
+    "expected": 45
+  },
+  {
+    "name": "finally return overrides return",
+    "category": "exceptions",
+    "source": "function main(){try{return 1;}finally{return 2;}}",
+    "expected": 2
+  },
+  {
+    "name": "finally return overrides throw",
+    "category": "exceptions",
+    "source": "function main(){try{throw 9;}finally{return 2;}}",
+    "expected": 2
+  },
+  {
+    "name": "finally throw overrides return",
+    "category": "exceptions",
+    "source": "function f(){try{return 1;}finally{throw 8;}}function main(){try{return f();}catch(e){return e;}}",
+    "expected": 8
+  },
+  {
+    "name": "rethrow executes finally",
+    "category": "exceptions",
+    "source": "function main(){var x=0;try{try{throw 2;}catch(e){throw e+1;}finally{x=4;}}catch(e){return x+e;}}",
+    "expected": 7
+  },
+  {
+    "name": "break executes finally",
+    "category": "exceptions",
+    "source": "function main(){var x=0;while(true){try{x=1;break;}finally{x=x+2;}}return x;}",
+    "expected": 3
+  },
+  {
+    "name": "continue executes finally",
+    "category": "exceptions",
+    "source": "function main(){var i=0;var x=0;while(i<3){i=i+1;try{continue;}finally{x=x+2;}}return x;}",
+    "expected": 6
+  },
+  {
+    "name": "catch return executes finally",
+    "category": "exceptions",
+    "source": "var x=0;function f(){try{throw 3;}catch(e){return e;}finally{x=7;}}function main(){return f()+x;}",
+    "expected": 10
+  },
+  {
+    "name": "catch variable shadows outer binding",
+    "category": "exceptions",
+    "source": "function main(){var e=10;var x=0;try{throw 3;}catch(e){x=e;}return x+e;}",
+    "expected": 13
+  },
+  {
+    "name": "no whitespace before unary minus",
+    "category": "parser",
+    "source": "function main(){var x=-1;return x*-3;}",
+    "expected": 3
+  },
+  {
+    "name": "adjacent unary not",
+    "category": "parser",
+    "source": "function main(){var x=!false;return x&&!!true;}",
+    "expected": "true"
+  },
+  {
+    "name": "line and block comments",
+    "category": "parser",
+    "source": "// leading comment\nfunction main(){var x=3;/* ignored */return x;// trailing\n}",
+    "expected": 3
+  },
+  {
+    "name": "trailing identifier at end of file",
+    "category": "errors",
+    "source": "function main(){return 1;}bad",
+    "error": "top level"
+  },
+  {
+    "name": "trailing number at end of file",
+    "category": "errors",
+    "source": "function main(){return 1;}99",
+    "error": "top level"
+  },
+  {
+    "name": "missing closing brace",
+    "category": "errors",
+    "source": "function main(){return 1;",
+    "error": "brace"
+  },
+  {
+    "name": "missing semicolon",
+    "category": "errors",
+    "source": "function main(){return 1}",
+    "error": "semicolon"
+  },
+  {
+    "name": "unterminated comment",
+    "category": "errors",
+    "source": "function main(){/* never ends",
+    "error": "comment"
+  },
+  {
+    "name": "undefined variable",
+    "category": "errors",
+    "source": "function main(){return missing;}",
+    "error": "undefined variable"
+  },
+  {
+    "name": "uninitialized variable",
+    "category": "errors",
+    "source": "function main(){var x;return x;}",
+    "error": "uninitialized variable"
+  },
+  {
+    "name": "duplicate local declaration",
+    "category": "errors",
+    "source": "function main(){var x=1;var x=2;return x;}",
+    "error": "redeclared"
+  },
+  {
+    "name": "assignment to undeclared variable",
+    "category": "errors",
+    "source": "function main(){x=2;return x;}",
+    "error": "undefined variable"
+  },
+  {
+    "name": "block variable does not leak",
+    "category": "errors",
+    "source": "function main(){{var x=1;}return x;}",
+    "error": "undefined variable"
+  },
+  {
+    "name": "too few arguments",
+    "category": "errors",
+    "source": "function f(a,b){return a+b;}function main(){return f(1);}",
+    "error": "arity mismatch"
+  },
+  {
+    "name": "too many arguments",
+    "category": "errors",
+    "source": "function f(a){return a;}function main(){return f(1,2);}",
+    "error": "arity mismatch"
+  },
+  {
+    "name": "duplicate parameters",
+    "category": "errors",
+    "source": "function f(a,a){return a;}function main(){return f(1,2);}",
+    "error": "duplicate parameter"
+  },
+  {
+    "name": "unsupported reference parameters",
+    "category": "errors",
+    "source": "function f(&a){return a;}function main(){var x=1;return f(x);}",
+    "error": "reference parameters"
+  },
+  {
+    "name": "break outside loop",
+    "category": "errors",
+    "source": "function main(){break;return 0;}",
+    "error": "break.*outside.*loop"
+  },
+  {
+    "name": "continue outside loop",
+    "category": "errors",
+    "source": "function main(){continue;return 0;}",
+    "error": "continue.*outside.*loop"
+  },
+  {
+    "name": "callee cannot break caller loop",
+    "category": "errors",
+    "source": "function f(){break;}function main(){while(true){f();}return 1;}",
+    "error": "break.*outside.*loop"
+  },
+  {
+    "name": "uncaught exception",
+    "category": "errors",
+    "source": "function main(){throw 17;}",
+    "error": "uncaught exception.*17"
+  },
+  {
+    "name": "division by zero",
+    "category": "errors",
+    "source": "function main(){return 1/0;}",
+    "error": "division by zero"
+  },
+  {
+    "name": "integer required for arithmetic",
+    "category": "errors",
+    "source": "function main(){return true+1;}",
+    "error": "expected integer"
+  },
+  {
+    "name": "Boolean required for condition",
+    "category": "errors",
+    "source": "function main(){if(1)return 2;return 3;}",
+    "error": "expected boolean"
+  },
+  {
+    "name": "Boolean required for logical operand",
+    "category": "errors",
+    "source": "function main(){return true&&1;}",
+    "error": "expected boolean"
+  },
+  {
+    "name": "call requires a function",
+    "category": "errors",
+    "source": "function main(){var x=1;return x();}",
+    "error": "not a function"
+  },
+  {
+    "name": "missing main",
+    "category": "errors",
+    "source": "function f(){return 1;}",
+    "error": "undefined variable.*main"
+  },
+  {
+    "name": "main needs a return value",
+    "category": "errors",
+    "source": "function main(){var x=1;}",
+    "error": "without.*return"
+  },
+  {
+    "name": "void call cannot be an expression",
+    "category": "errors",
+    "source": "function f(){var x=1;}function main(){return f();}",
+    "error": "without.*return"
+  },
+  {
+    "name": "finally break overrides pending return",
+    "category": "exceptions",
+    "source": "function main(){var x=0;while(true){try{return 1;}finally{x=3;break;}}return x;}",
+    "expected": 3
+  },
+  {
+    "name": "finally continue overrides pending break",
+    "category": "exceptions",
+    "source": "function main(){var i=0;while(i<3){i=i+1;try{break;}finally{continue;}}return i;}",
+    "expected": 3
+  },
+  {
+    "name": "nested finally runs once each",
+    "category": "exceptions",
+    "source": "var x=0;function f(){try{try{return 4;}finally{x=x*10+1;}}finally{x=x*10+2;}}function main(){return f()*100+x;}",
+    "expected": 412
+  },
+  {
+    "name": "exception in while condition",
+    "category": "exceptions",
+    "source": "function fail(){throw 9;}function main(){try{while(fail()){return 0;}}catch(e){return e;}}",
+    "expected": 9
+  },
+  {
+    "name": "exception in Boolean expression",
+    "category": "exceptions",
+    "source": "function fail(){throw 9;}function main(){try{if(true&&fail())return 0;}catch(e){return e;}}",
+    "expected": 9
+  },
+  {
+    "name": "callee finally precedes caller catch",
+    "category": "exceptions",
+    "source": "var x=0;function f(){try{throw 2;}finally{x=3;}}function main(){try{f();}catch(e){x=x*10+e;}finally{x=x*10+4;}return x;}",
+    "expected": 324
+  },
+  {
+    "name": "return captures value before finally mutates binding",
+    "category": "exceptions",
+    "source": "function f(){var x=1;try{return x;}finally{x=2;}}function main(){return f();}",
+    "expected": 1
+  },
+  {
+    "name": "zero iterations skip body",
+    "category": "control",
+    "source": "function main(){var x=1;while(false){x=2;}return x;}",
+    "expected": 1
+  },
+  {
+    "name": "assignment in condition evaluated once",
+    "category": "state",
+    "source": "function main(){var x=0;if((x=x+1)==1)x=x+3;return x;}",
+    "expected": 4
+  },
+  {
+    "name": "nested arguments and return side effects",
+    "category": "state",
+    "source": "var x=0;function next(){x=x+1;return x;}function pair(a,b){return 10*a+b;}function main(){return pair(next(),pair(next(),next()));}",
+    "expected": 33
+  },
+  {
+    "name": "comment at end of file",
+    "category": "parser",
+    "source": "function main(){return 4;}// end",
+    "expected": 4
+  },
+  {
+    "name": "division followed by unary minus",
+    "category": "parser",
+    "source": "function main(){return 8/-2;}",
+    "expected": -4
+  },
+  {
+    "name": "empty input",
+    "category": "errors",
+    "source": "",
+    "error": "undefined variable.*main"
+  },
+  {
+    "name": "catch parameter does not leak",
+    "category": "errors",
+    "source": "function main(){try{throw 2;}catch(e){var x=e;}return e;}",
+    "error": "undefined variable"
+  },
+  {
+    "name": "main cannot return a closure",
+    "category": "errors",
+    "source": "function f(){return 1;}function main(){return f;}",
+    "error": "main must return an integer or boolean"
+  },
+  {
+    "name": "numeric logical not rejected",
+    "category": "errors",
+    "source": "function main(){return !0;}",
+    "error": "expected boolean"
+  },
+  {
+    "name": "remainder by zero rejected",
+    "category": "errors",
+    "source": "function main(){return 5%0;}",
+    "error": "division by zero"
+  }
+]

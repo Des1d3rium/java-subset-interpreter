@@ -1,0 +1,26 @@
+name: Correctness tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Bogdanp/setup-racket@v1.16
+        with:
+          version: '9.3'
+          distribution: full
+      - name: Run interpreter and CLI tests
+        run: raco test tests
+      - name: Run demonstration programs
+        run: |
+          racket interpreter.rkt examples/lexical-scope.java
+          racket interpreter.rkt examples/closure-counter.java
+          racket interpreter.rkt examples/finally.java
